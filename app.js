@@ -18,6 +18,7 @@ const Gameboard = (() => {
     return {
         // not implemented yet
         render,
+        board,
     }
 })();
 
@@ -43,12 +44,19 @@ let GameController = (() => {
     }
 
     let handleClick = (e) => {
-        alert(e.target.id);
+        let index = parseInt(e.target.id);
+        GameController.update(index, players[currentPlayerIndex].marker);
+    }
+
+    let update = (index, marker) => {
+        Gameboard.board[index] = marker;
+        Gameboard.render();
     }
 
     return {
         start,
         handleClick,
+        update,
     }
 })()
 
