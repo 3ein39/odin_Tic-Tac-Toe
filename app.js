@@ -2,7 +2,9 @@ let start = document.getElementById('start');
 let reset = document.getElementById('reset');
 
 // Gameboard module
+// IIFE to create private variables
 const Gameboard = (() => {
+    // private variables as not returned
     let board = ["", "", "", "", "", "", "", "", ""];
 
     let render = () => {
@@ -12,12 +14,36 @@ const Gameboard = (() => {
         }
     }
 
-
     return {
         // not implemented yet
         render,
     }
 })();
+
+// CreatePlayer factory
+let createPlayer = (name, marker) => {
+    return {name, marker};
+}
+
+// game controller module
+let GameController = (() => {
+    let players = [];
+    let currentPlayerIndex ;
+    let gameOver ;
+    let start = () => {
+        players.push(createPlayer(document.getElementById('player1-name').value, 'X'));
+        players.push(createPlayer(document.getElementById('player2-name').value, 'O'));
+
+        currentPlayerIndex = 0;
+        gameOver = false;
+        Gameboard.render();
+    }
+
+    return {
+        start,
+    }
+})()
+
 start.addEventListener('click', () => {
-    // Game.start();
+    GameController.start();
 })
