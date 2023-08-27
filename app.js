@@ -46,6 +46,7 @@ let GameController = (() => {
     let handleClick = (e) => {
         let index = parseInt(e.target.id);
         GameController.update(index, players[currentPlayerIndex].marker);
+        currentPlayerIndex === 0 ? currentPlayerIndex = 1 : currentPlayerIndex = 0;
     }
 
     let update = (index, marker) => {
