@@ -15,10 +15,15 @@ const Gameboard = (() => {
         }
     }
 
+    // board getter
+    let getBoard = () => {
+        return board;
+    }
+
     return {
         // not implemented yet
         render,
-        board,
+        getBoard,
     }
 })();
 
@@ -45,12 +50,16 @@ let GameController = (() => {
 
     let handleClick = (e) => {
         let index = parseInt(e.target.id);
+
+        if (Gameboard.getBoard()[index] !== "")
+            return;
+
         GameController.update(index, players[currentPlayerIndex].marker);
         currentPlayerIndex === 0 ? currentPlayerIndex = 1 : currentPlayerIndex = 0;
     }
 
     let update = (index, marker) => {
-        Gameboard.board[index] = marker;
+        Gameboard.getBoard()[index] = marker;
         Gameboard.render();
     }
 
