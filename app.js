@@ -11,9 +11,7 @@ const Gameboard = (() => {
         for (let i = 0; i < board.length; i++) {
             let cell = document.getElementById(`${i}`);
             cell.innerText = board[i];
-            cell.addEventListener('click', () => {
-                alert(`cell ${i} clicked`);
-            })
+            cell.addEventListener('click', GameController.handleClick);
         }
     }
 
@@ -44,8 +42,13 @@ let GameController = (() => {
         Gameboard.render();
     }
 
+    let handleClick = (e) => {
+        alert(e.target.id);
+    }
+
     return {
         start,
+        handleClick,
     }
 })()
 
