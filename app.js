@@ -55,7 +55,42 @@ let GameController = (() => {
             return;
 
         GameController.update(index, players[currentPlayerIndex].marker);
+
+
+        if (GameController.checkWin()) {
+            gameOver = true;
+        }
+        if (gameOver){
+
+        }
         currentPlayerIndex === 0 ? currentPlayerIndex = 1 : currentPlayerIndex = 0;
+    }
+
+    let checkWin = () => {
+        let board = Gameboard.getBoard();
+        let marker = players[currentPlayerIndex].marker;
+        let win = false;
+        // check rows
+        // board is 1D array of 9 cells
+        for (let i = 0; i < 9; i += 3) {
+            if (board[i] === marker && board[i+1] === marker && board[i+2] === marker) {
+                win = true;
+            }
+        }
+        // check columns
+        for (let i = 0; i < 3; i++) {
+            if (board[i] === marker && board[i+3] === marker && board[i+6] === marker) {
+                win = true;
+            }
+        }
+        // check diagonals
+        if (board[0] === marker && board[4] === marker && board[8] === marker) {
+            win = true;
+        }
+        if (board[2] === marker && board[4] === marker && board[6] === marker) {
+            win = true;
+        }
+        return win;
     }
 
     let update = (index, marker) => {
@@ -82,7 +117,8 @@ let GameController = (() => {
         start,
         handleClick,
         update,
-        reset
+        reset,
+        checkWin,
     }
 })()
 
