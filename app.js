@@ -63,13 +63,33 @@ let GameController = (() => {
         Gameboard.render();
     }
 
+    let reset = () => {
+        Gameboard.getBoard().forEach((cell, index) => {
+            Gameboard.getBoard()[index] = "";
+        })
+        Gameboard.render();
+        players = []
+        document.getElementById('player1-name').value = "";
+        document.getElementById('player2-name').value = "";
+        // remove event listeners
+        let cells = document.querySelectorAll('.square');
+        cells.forEach(cell => {
+            cell.removeEventListener('click', GameController.handleClick);
+        })
+    }
+
     return {
         start,
         handleClick,
         update,
+        reset
     }
 })()
 
 start.addEventListener('click', () => {
     GameController.start();
+})
+
+reset.addEventListener('click', () => {
+    GameController.reset();
 })
