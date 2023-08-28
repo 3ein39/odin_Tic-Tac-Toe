@@ -66,6 +66,13 @@ let GameController = (() => {
             window.setTimeout(GameController.reset, 2000);
             return;
         }
+        // check for draw
+        if (Gameboard.getBoard().every(cell => cell !== "")) {
+            status.innerText = "It's a draw!\n Click reset to play again, Game will reset in 2 Seconds";
+            window.setTimeout(GameController.reset, 2000);
+            return;
+        }
+        
         currentPlayerIndex === 0 ? currentPlayerIndex = 1 : currentPlayerIndex = 0;
         status.innerText = `${players[currentPlayerIndex].name}'s turn`;
     }
