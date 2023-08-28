@@ -2,7 +2,8 @@
 
 A simple implementation of the classic Tic-Tac-Toe game with minimax algorithm
 
-<!-- ![Tic-Tac-Toe Preview](/path/to/your/preview/image.png) -->
+
+ ![Tic-Tac-Toe Preview](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcnFzdHplYnE5ZmJ0NmdtdDg3cmFjeTU1OWJpeWRpeThyY3gzaHh4OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TzBYk0eTLou7C03PVK/giphy.gif) 
 
 ## Table of Contents
 
