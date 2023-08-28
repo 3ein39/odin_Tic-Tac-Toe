@@ -58,6 +58,10 @@ let GameController = (() => {
         if (Gameboard.getBoard()[index] !== "")
             return;
 
+        if (players[currentPlayerIndex].name === "AI")
+            index = AI.bestMove(Gameboard.getBoard(), players[currentPlayerIndex].marker);
+
+
         GameController.update(index, players[currentPlayerIndex].marker);
 
         if (GameController.checkWin()) {
@@ -76,6 +80,8 @@ let GameController = (() => {
         }
 
         currentPlayerIndex === 0 ? currentPlayerIndex = 1 : currentPlayerIndex = 0;
+        if (players[currentPlayerIndex].name === "AI")
+            status.innerText = `AI's turn, click anywhere to let him defeat you XD`;
         status.innerText = `${players[currentPlayerIndex].name}'s turn`;
     }
 
@@ -127,14 +133,132 @@ let GameController = (() => {
         status.innerText = "Enter player names and click start to begin";
     }
 
+    // getter for players array
+    let getPlayers = () => {
+        return players;
+    }
+
+    // getter for current player index
+    let getPlayerIndex = () => {
+        return currentPlayerIndex;
+    }
+
     return {
         start,
         handleClick,
         update,
         reset,
         checkWin,
+        getPlayers,
+        getPlayerIndex,
     }
 })()
+let AI = (() => {
+    let bestMove = (board, marker) => {
+        let bestScore = -Infinity;
+        let bestMoveIndex = -1;
+
+        for (let i = 0; i < board.length; i++) {
+            if (board[i] === "") {
+                board[i] = marker;
+                let score = minimax(board, 0, false);
+                board[i] = ""; // Reset the board state
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMoveIndex = i;
+                }
+            }
+        }
+
+        return bestMoveIndex;
+    };
+
+    let minimax = (board, depth, isMaximizing) => {
+        // Base cases
+        let scores = {
+            X: -10,
+            O: 10,
+            tie: 0,
+        };
+
+        // same as in GameController.checkWin()
+        // but returns score instead of boolean
+        let checkWin = () => {
+            let win = false;
+            // check rows
+            // board is 1D array of 9 cells
+            for (let i = 0; i < 9; i += 3) {
+                if (board[i] === 'X' && board[i+1] === 'X' && board[i+2] === 'X') {
+                    win = 'X';
+                }
+                if (board[i] === 'O' && board[i+1] === 'O' && board[i+2] === 'O') {
+                    win = 'O';
+                }
+            }
+            // check columns
+            for (let i = 0; i < 3; i++) {
+                if (board[i] === 'X' && board[i+3] === 'X' && board[i+6] === 'X') {
+                    win = 'X';
+                }
+                if (board[i] === 'O' && board[i+3] === 'O' && board[i+6] === 'O') {
+                    win = 'O';
+                }
+            }
+            // check diagonals
+            if (board[0] === 'X' && board[4] === 'X' && board[8] === 'X') {
+                win = 'X';
+            }
+            if (board[2] === 'X' && board[4] === 'X' && board[6] === 'X') {
+                win = 'X';
+            }
+            if (board[0] === 'O' && board[4] === 'O' && board[8] === 'O') {
+                win = 'O';
+            }
+            if (board[2] === 'O' && board[4] === 'O' && board[6] === 'O') {
+                win = 'O';
+            }
+            // check for tie
+            if (board.every(cell => cell !== "")) {
+                win = "tie";
+            }
+            return win;
+        }
+
+        let result = checkWin();
+        if (result === "X") return scores.X;
+        if (result === "O") return scores.O;
+        if (result === "tie") return scores.tie;
+
+        if (isMaximizing) {
+            let bestScore = -Infinity;
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === "") {
+                    board[i] = 'O';
+                    let score = minimax(board, depth + 1, false);
+                    board[i] = "";
+                    bestScore = Math.max(score, bestScore);
+                }
+            }
+            return bestScore;
+        } else {
+            let bestScore = Infinity;
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === "") {
+                    board[i] = 'X';
+                    let score = minimax(board, depth + 1, true);
+                    board[i] = "";
+                    bestScore = Math.min(score, bestScore);
+                }
+            }
+            return bestScore;
+        }
+    };
+
+    return {
+        bestMove,
+    };
+})();
 
 start.addEventListener('click', () => {
     GameController.start();
