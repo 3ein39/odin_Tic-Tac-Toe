@@ -135,7 +135,7 @@ let GameController = (() => {
         cells.forEach(cell => {
             cell.removeEventListener('click', GameController.handleClick);
         })
-        status.innerText = "Enter player names and click start to begin";
+        status.innerText = 'Enter player names and click start to begin, type "AI" in player2 to play against AI!';
     }
 
     // getter for players array
