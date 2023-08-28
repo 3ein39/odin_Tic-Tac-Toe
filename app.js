@@ -58,8 +58,8 @@ let GameController = (() => {
         if (Gameboard.getBoard()[index] !== "")
             return;
 
-        if (players[currentPlayerIndex].name === "AI")
-            index = AI.bestMove(Gameboard.getBoard(), players[currentPlayerIndex].marker);
+        // if (players[currentPlayerIndex].name === "AI")
+        //     index = AI.bestMove(Gameboard.getBoard(), players[currentPlayerIndex].marker);
 
 
         GameController.update(index, players[currentPlayerIndex].marker);
@@ -75,14 +75,19 @@ let GameController = (() => {
         // check for draw
         if (Gameboard.getBoard().every(cell => cell !== "")) {
             status.innerText = "It's a draw!\n Click reset to play again, Game will reset in 2 Seconds";
-            window.setTimeout(GameController.reset, 2000);
+            window.setTimeout(GameController.reset, 1000);
             return;
         }
 
         currentPlayerIndex === 0 ? currentPlayerIndex = 1 : currentPlayerIndex = 0;
-        if (players[currentPlayerIndex].name === "AI")
-            status.innerText = `AI's turn, click anywhere to let him defeat you XD`;
-        status.innerText = `${players[currentPlayerIndex].name}'s turn`;
+        if (players[currentPlayerIndex].name === "AI") {
+            status.innerText = `${players[currentPlayerIndex].name}'s turn, AI is thinking...`;
+            setTimeout(() => {
+                GameController.handleClick({target: {id: AI.bestMove(Gameboard.getBoard(), players[currentPlayerIndex].marker)}});
+            }, 2000);
+        }
+        else
+            status.innerText = `${players[currentPlayerIndex].name}'s turn`;
     }
 
     let checkWin = () => {
