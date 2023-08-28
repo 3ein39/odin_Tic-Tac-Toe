@@ -1,6 +1,8 @@
 let start = document.getElementById('start');
 let reset = document.getElementById('reset');
 
+// The 2 Players game variant
+
 // Gameboard module
 // IIFE to create private variables
 const Gameboard = (() => {
@@ -72,7 +74,7 @@ let GameController = (() => {
             window.setTimeout(GameController.reset, 2000);
             return;
         }
-        
+
         currentPlayerIndex === 0 ? currentPlayerIndex = 1 : currentPlayerIndex = 0;
         status.innerText = `${players[currentPlayerIndex].name}'s turn`;
     }
