@@ -192,7 +192,6 @@ let AI = (() => {
         let checkWin = () => {
             let win = false;
             // check rows
-            // board is 1D array of 9 cells
             for (let i = 0; i < 9; i += 3) {
                 if (board[i] === 'X' && board[i+1] === 'X' && board[i+2] === 'X') {
                     win = 'X';
@@ -224,11 +223,12 @@ let AI = (() => {
                 win = 'O';
             }
             // check for tie
-            if (board.every(cell => cell !== "")) {
+            if (board.every(cell => cell !== "") && !win) {
                 win = "tie";
             }
             return win;
         }
+
 
         let result = checkWin();
         if (result === "X") return scores.X;
