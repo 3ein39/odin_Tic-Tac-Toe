@@ -37,12 +37,14 @@ let GameController = (() => {
     let players = [];
     let currentPlayerIndex ;
     let gameOver ;
+    let status = document.getElementById('status');
     let start = () => {
         players.push(createPlayer(document.getElementById('player1-name').value, 'X'));
         players.push(createPlayer(document.getElementById('player2-name').value, 'O'));
 
         currentPlayerIndex = 0;
         gameOver = false;
+        status.innerText = `${players[currentPlayerIndex].name}'s turn`;
 
 
         Gameboard.render();
@@ -56,14 +58,16 @@ let GameController = (() => {
 
         GameController.update(index, players[currentPlayerIndex].marker);
 
-
         if (GameController.checkWin()) {
             gameOver = true;
         }
         if (gameOver){
-
+            status.innerText = `${players[currentPlayerIndex].name} wins!\n Click reset to play again, Game will reset in 2 Seconds`;
+            window.setTimeout(GameController.reset, 2000);
+            return;
         }
         currentPlayerIndex === 0 ? currentPlayerIndex = 1 : currentPlayerIndex = 0;
+        status.innerText = `${players[currentPlayerIndex].name}'s turn`;
     }
 
     let checkWin = () => {
@@ -111,6 +115,7 @@ let GameController = (() => {
         cells.forEach(cell => {
             cell.removeEventListener('click', GameController.handleClick);
         })
+        status.innerText = "Enter player names and click start to begin";
     }
 
     return {
